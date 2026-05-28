@@ -1,0 +1,263 @@
+/* AvianVisitors — collage frontend styles.
+ * Paper-and-ink aesthetic to match the bundled kachō-e illustrations. */
+
+:root {
+  --paper:      #f4ede0;
+  --paper-2:    #ebe1cf;
+  --ink:        #3a2f24;
+  --ink-2:      #6b5c4a;
+  --ink-soft:   #9d8d76;
+  --accent:     #a8341d;
+  --recess:     inset 0 1px 2px rgba(58,47,36,0.18), inset 0 -1px 0 rgba(255,255,255,0.4);
+  --raised:     0 1px 0 rgba(58,47,36,0.12), 0 0 0 1px rgba(58,47,36,0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 14px/1.5 ui-serif, "Iowan Old Style", Georgia, serif;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; }
+
+/* ---- Stage + static head ---- */
+.stage {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  padding: 40px 16px 120px;
+}
+.static-head {
+  text-align: center;
+  padding: 8px 0 14px;
+}
+.static-head .pre {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: italic 400 13px/1 ui-serif, "Iowan Old Style", Georgia, serif;
+  color: var(--ink-2); letter-spacing: 0.06em;
+}
+.static-head .pre:hover { color: var(--ink); }
+.static-head h1 {
+  margin: 4px 0 0;
+  font: 700 28px/1.1 ui-serif, "Iowan Old Style", Georgia, serif;
+  letter-spacing: 0.01em;
+}
+@media (min-width: 768px) { .static-head h1 { font-size: 36px; } }
+
+/* ---- View container ---- */
+.views { flex: 1; position: relative; }
+.view { width: 100%; }
+
+/* ---- Collage tiles ---- */
+.collage {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 240px);
+  min-height: 360px;
+}
+.gtile {
+  position: absolute;
+  background: none; border: 0; padding: 0; cursor: pointer;
+  transition: transform 180ms ease, z-index 0s;
+}
+.gtile:hover, .gtile.is-hover { transform: scale(1.04); z-index: 3; }
+.gtile img {
+  width: 100%; height: 100%; object-fit: contain; display: block;
+  pointer-events: none;
+}
+.collage .empty {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-soft);
+  font: italic 14px ui-serif, Georgia, serif;
+}
+
+/* ---- Stats timeline ---- */
+.stats-tl {
+  position: relative;
+  width: 100%; height: 60vh; min-height: 340px;
+  padding: 28px 22px 30px;
+}
+.stats-tl-plot { position: relative; width: 100%; height: 100%; }
+.stats-tl-mark {
+  position: absolute; width: 10px; height: 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  transform: translate(-50%, 50%);
+  cursor: pointer;
+}
+.stats-tl-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: var(--ink-soft); font-style: italic;
+}
+
+/* ---- Atlas grid ---- */
+.atlas-sort {
+  display: flex; position: relative;
+  margin: 0 auto 18px; padding: 4px;
+  background: var(--paper-2); border-radius: 999px;
+  box-shadow: var(--recess);
+  width: fit-content;
+}
+.atlas-sort button {
+  position: relative; z-index: 1;
+  background: none; border: 0; padding: 6px 14px; cursor: pointer;
+  font: 10px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.06em; text-transform: lowercase;
+  color: var(--ink-soft);
+  transition: color 160ms;
+}
+.atlas-sort button[aria-current="true"] { color: var(--ink); }
+.atlas-list {
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  padding: 0 8px;
+}
+.atlas-card {
+  background: none; border: 0; padding: 6px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  border-radius: 10px;
+  transition: background 160ms;
+}
+.atlas-card:hover { background: rgba(58,47,36,0.04); }
+.atlas-card img { width: 100%; max-height: 110px; object-fit: contain; }
+.atlas-name {
+  margin-top: 4px;
+  font: 11px ui-serif, Georgia, serif;
+  color: var(--ink);
+}
+.atlas-count {
+  font: 9px ui-monospace, Menlo, monospace;
+  color: var(--ink-soft);
+}
+
+/* ---- Bottom-fixed view slider + window picker ---- */
+.slider, .window-pick {
+  position: fixed;
+  display: flex; padding: 4px;
+  background: var(--paper-2); border-radius: 999px;
+  box-shadow: var(--recess);
+  z-index: 20;
+}
+.slider {
+  bottom: 28px; left: 50%; transform: translateX(-50%);
+}
+.window-pick {
+  top: 18px; left: 18px;
+}
+.slider button, .window-pick button {
+  position: relative; z-index: 1;
+  background: none; border: 0; padding: 7px 14px; cursor: pointer;
+  font: 10px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.08em; text-transform: lowercase;
+  color: var(--ink-soft);
+  transition: color 160ms;
+}
+.slider button[aria-current="true"], .window-pick button[aria-current="true"] {
+  color: var(--ink);
+}
+.seg-pill {
+  position: absolute; top: 4px; bottom: 4px;
+  background: var(--paper); border-radius: 999px;
+  box-shadow: var(--raised);
+  transition: transform 220ms cubic-bezier(.32,.72,.32,1), width 220ms;
+  z-index: 0;
+}
+
+/* ---- About modal ---- */
+#about-modal, #detail-modal {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  pointer-events: none; opacity: 0;
+  transition: opacity 200ms ease;
+}
+#about-modal[aria-hidden="false"], #detail-modal[aria-hidden="false"] {
+  pointer-events: auto; opacity: 1;
+}
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(26,22,18,0.32);
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: none; border: 0; cursor: pointer;
+  font: 22px/1 ui-serif, Georgia, serif;
+  color: var(--ink-soft);
+}
+.modal-close:hover { color: var(--ink); }
+.about-card, .detail-card {
+  position: relative;
+  max-width: 432px; width: 100%;
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    0 30px 80px rgba(26,22,18,0.24);
+  padding: 34px 34px 28px;
+}
+.about-card .about-eyebrow {
+  margin: 0 0 7px;
+  font: italic 400 13px/1 ui-serif, Georgia, serif;
+  color: var(--ink-2); letter-spacing: 0.06em;
+}
+.about-card h2 {
+  margin: 0 0 13px;
+  font: 700 22px/1.25 ui-serif, Georgia, serif;
+  color: var(--ink);
+}
+.about-card .about-body {
+  margin: 0;
+  font: 400 14.5px/1.62 ui-serif, Georgia, serif;
+  color: var(--ink-2);
+}
+.about-card .about-body a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.about-card .about-explore {
+  margin-top: 20px;
+  background: none; border: 0; padding: 0;
+  font: 700 11px/1 ui-monospace, Menlo, monospace;
+  letter-spacing: 0.08em; text-transform: lowercase;
+  color: var(--ink-soft); cursor: pointer;
+}
+.about-card .about-explore:hover { color: var(--ink); }
+.built-by {
+  margin: 18px 4px 0;
+  font: 10px ui-monospace, Menlo, monospace;
+  color: var(--ink-soft); letter-spacing: 0.04em;
+}
+.built-by a {
+  color: inherit; text-decoration: underline; text-underline-offset: 2px;
+}
+.built-by a:hover { color: var(--ink); }
+
+/* ---- Detail modal ---- */
+.detail-card {
+  max-width: 520px;
+  padding: 26px 30px;
+}
+.detail-img {
+  width: 100%; max-height: 220px; object-fit: contain;
+  background: rgba(0,0,0,0.02); border-radius: 8px;
+}
+.detail-title {
+  margin: 14px 0 4px;
+  font: 700 22px/1.25 ui-serif, Georgia, serif;
+}
+.detail-sci {
+  margin: 0 0 6px;
+  font: 13px ui-serif, Georgia, serif;
+  color: var(--ink-2);
+}
+.detail-stats {
+  margin: 0 0 14px;
+  font: 11px ui-monospace, Menlo, monospace;
+  color: var(--ink-soft);
+}
+.detail-audio { width: 100%; margin-bottom: 10px; }
+.detail-spec  { width: 100%; border-radius: 6px; background: #111; }

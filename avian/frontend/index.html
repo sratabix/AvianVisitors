@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>apartment birds</title>
+<meta name="description" content="A live bird collage from your apartment window.">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<main class="stage">
+  <header class="static-head">
+    <button type="button" class="pre" id="aboutLink">apartment birds</button>
+    <h1 id="staticTitle">Heard Recently</h1>
+  </header>
+
+  <div class="views" id="views">
+    <section class="view view-collage" data-view="0">
+      <div id="collage" class="collage"></div>
+    </section>
+    <section class="view view-stats" data-view="1" hidden>
+      <div id="statsTimeline" class="stats-tl"></div>
+    </section>
+    <section class="view view-atlas" data-view="2" hidden>
+      <div class="atlas-sort" id="atlasSort">
+        <i class="seg-pill" aria-hidden="true"></i>
+        <button type="button" data-sort="count" aria-current="true">most heard</button>
+        <button type="button" data-sort="recent">most recent</button>
+        <button type="button" data-sort="first">first seen</button>
+      </div>
+      <div id="atlasList" class="atlas-list"></div>
+    </section>
+  </div>
+</main>
+
+<div class="window-pick" id="winPick" role="tablist">
+  <i class="seg-pill" aria-hidden="true"></i>
+  <button data-h="1"    type="button">1H</button>
+  <button data-h="12"   type="button">12H</button>
+  <button data-h="24"   type="button" aria-current="true">24H</button>
+  <button data-h="168"  type="button">7D</button>
+  <button data-h="9999999" type="button">ALL</button>
+</div>
+
+<nav class="slider" id="slider" aria-label="View">
+  <i class="seg-pill" aria-hidden="true"></i>
+  <button type="button" data-i="0" aria-current="true">collage</button>
+  <button type="button" data-i="1">stats</button>
+  <button type="button" data-i="2">atlas</button>
+</nav>
+
+<div id="about-modal" aria-hidden="true" role="dialog" aria-labelledby="aboutTitle">
+  <div class="modal-backdrop" data-close="1"></div>
+  <div class="about-card" role="document">
+    <button type="button" class="modal-close" data-close="1" aria-label="close">×</button>
+    <p class="about-eyebrow">apartment birds</p>
+    <h2 id="aboutTitle">The birds outside my window</h2>
+    <p class="about-body">A tiny microphone listens for birds passing the window and identifies them with Cornell's <a href="https://birdnet.cornell.edu/" target="_blank" rel="noopener">BirdNET</a>. Each species shows up as an illustration in the collage — sized by how much it's been heard.</p>
+    <button type="button" class="about-explore" data-close="1">explore the birds →</button>
+    <p class="built-by">built with <a href="https://github.com/Twarner491/AvianVisitors" target="_blank" rel="noopener">AvianVisitors</a></p>
+  </div>
+</div>
+
+<script src="./apt.js"></script>
+</body>
+</html>

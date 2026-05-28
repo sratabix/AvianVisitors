@@ -1,183 +1,122 @@
-<h1 align="center"><a href="https://github.com/mcguirepr89/BirdNET-Pi/blob/main/LICENSE">Review the license!!</a></h1>
-<h1 align="center">You may not use BirdNET-Pi to develop a commercial product!!!!</h1>
-<h1 align="center">
-  BirdNET-Pi
-</h1>
-<p align="center">
-A realtime acoustic bird classification system for the Raspberry Pi 5, 4B, 400, 3B+, and 0W2
-</p>
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/60325264/140656397-bf76bad4-f110-467c-897d-992ff0f96476.png" />
-</p>
-<p align="center">
-Icon made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-</p>
+# AvianVisitors
 
-## About this fork:
-I've been building on [mcguirepr89's](https://github.com/mcguirepr89/BirdNET-Pi) most excellent work to further update and improve BirdNET-Pi. Maybe someone will find it useful.
+*A live bird collage from your apartment window.*
 
-Changes include:
+A frontend overlay for [BirdNET-Pi](https://github.com/Nachtzuster/BirdNET-Pi). Listens to your balcony, identifies every passing bird with Cornell's [BirdNET](https://birdnet.cornell.edu/), and renders the detections as a tile-packed kachō-e print at `http://birdnet.local/collage/`. Full project writeup at [teddywarner.org/Projects/AvianVisitors](https://teddywarner.org/Projects/AvianVisitors/).
 
- - Backup & Restore
- - Web ui is much more responsive
- - Daily charts now include all species, not just top/bottom 10
- - Bump apprise version, so more notification type are possible
- - Swipe events on Daily Charts (by @croisez)
- - Support for 'Species range model V2.4 - V2'
- - Bookworm and Trixie support
- - Experimental support for writing transient files to tmpfs
- - Rework analysis to consolidate analysis/server/extraction. Should make analysis more robust and slightly more efficient, especially on installations with a large number of recordings
- - Bump tflite_runtime to 2.17.1, it is faster
- - Rework daily_plot.py (chart_viewer) to run as a daemon to avoid the very expensive startup
- - Lots of fixes & cleanups
+<img alt="avianvisitors collage" src="docs/thumb.png" />
 
-!! note: see 'Migrating' on how to migrate from mcguirepr89
+---
 
-## Introduction
-BirdNET-Pi is built on the [BirdNET framework](https://github.com/kahst/BirdNET-Analyzer) by [**@kahst**](https://github.com/kahst) <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg"></a> using [pre-built TFLite binaries](https://github.com/PINTO0309/TensorflowLite-bin) by [**@PINTO0309**](https://github.com/PINTO0309) . It is able to recognize bird sounds from a USB microphone or sound card in realtime and share its data with the rest of the world.
+## BOM
 
-Check out birds from around the world
-- [BirdWeather](https://app.birdweather.com)<br>
+| Qty | Description | Price | Link | Notes |
+|-----|-------------|-------|------|-------|
+| 1 | Raspberry Pi (4B / 5 / Zero 2W) | ~$35–80 | [Raspberry Pi](https://www.raspberrypi.com/products/) | 4B+ recommended |
+| 1 | Micro SD Card | ~$10 | [Amazon](https://a.co/d/08aiL8c) | ≥32 GB |
+| 1 | USB Lavalier Microphone | $14.99 | [Amazon](https://www.amazon.com/dp/B0176NRE1G) | The one I used. Any USB mic with a half-decent capsule works. |
+| 1 | Pi Power Supply | ~$10 | — | Matched to your Pi model |
 
-## Features
-* **24/7 recording and automatic identification** of bird songs, chirps, and peeps using BirdNET machine learning
-* **Automatic extraction and cataloguing** of bird clips from full-length recordings
-* **Tools to visualize your recorded bird data** and analyze trends
-* **Live audio stream and spectrogram**
-* **Automatic disk space management** that periodically purges old audio files
-* [BirdWeather](https://app.birdweather.com) integration -- you can request a BirdWeather ID from BirdNET-Pi's "Tools" > "Settings" page
-* Web interface access to all data and logs provided by [Caddy](https://caddyserver.com)
-* [GoTTY](https://github.com/yudai/gotty) and [GoTTY x86](https://github.com/sorenisanerd/gotty) Web Terminal
-* [Tiny File Manager](https://tinyfilemanager.github.io/)
-* FTP server included
-* SQLite3 Database
-* [Adminer](https://www.adminer.org/) database maintenance
-* [phpSysInfo](https://github.com/phpsysinfo/phpsysinfo)
-* [Apprise Notifications](https://github.com/caronc/apprise) supporting 90+ notification platforms
-* Localization supported
+You'll also need a [Gemini API key](https://aistudio.google.com/apikey) (free tier is enough for an apartment-scale lifelist) and, optionally, an [eBird API key](https://ebird.org/api/keygen) for region-filtering the species pre-gen.
 
-## Requirements
-* A Raspberry Pi 5, Raspberry 4B, Raspberry Pi 400, Raspberry Pi 3B+, or Raspberry Pi 0W2 (The 3B+ and 0W2 must run on RaspiOS-ARM64-**Lite**)
-* An SD Card with the **_64-bit version of RaspiOS_** installed (please use Trixie) -- Lite is recommended, but the installation works on RaspiOS-ARM64-Full as well. Downloads available within the [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
-* A USB Microphone or Sound Card
+---
 
-## Installation
-[A comprehensive installation guide is available here](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Installation-Guide). This guide is slightly out-dated: make sure to pick Bookworm, also the curl command is still pointing to mcguirepr89's repo.
+## 1. Install BirdNET-Pi
 
-Please note that installing BirdNET-Pi on top of other servers is not supported. If this is something that you require, please open a discussion for your idea and inquire about how to contribute to development.
+Follow the [BirdNET-Pi installation guide](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Installation-Guide) on your Pi. Confirm the stock BirdNET-Pi UI is reachable at `http://birdnet.local/` before continuing.
 
-[Raspberry Pi 3B[+] and 0W2 installation guide available here](https://github.com/mcguirepr89/BirdNET-Pi/wiki/RPi0W2-Installation-Guide)
+---
 
-The system can be installed with:
-```
-curl -s https://raw.githubusercontent.com/Nachtzuster/BirdNET-Pi/main/newinstaller.sh | bash
-```
-The installer takes care of any and all necessary updates, so you can run that as the very first command upon the first boot, if you'd like.
+## 2. Clone AvianVisitors
 
-The installation creates a log in `$HOME/installation-$(date "+%F").txt`.
-## Access
-The BirdNET-Pi can be accessed from any web browser on the same network:
-- http://birdnetpi.local OR your Pi's IP address
-- Default Basic Authentication Username: birdnet
-- Password is empty by default. Set this in "Tools" > "Settings" > "Advanced Settings"
-
-Please take a look at the [wiki](https://github.com/mcguirepr89/BirdNET-Pi/wiki) and [discussions](https://github.com/mcguirepr89/BirdNET-Pi/discussions) for information on
-- [BirdNET-Pi's Deep Convolutional Neural Network(s)](https://github.com/mcguirepr89/BirdNET-Pi/wiki/BirdNET-Pi:-some-theory-on-classification-&-some-practical-hints)
-- [making your installation public](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Sharing-Your-BirdNET-Pi)
-- [backing up and restoring your database](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Backup-and-Restore-the-Database)
-- [adjusting your sound card settings](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Adjusting-your-sound-card)
-- [suggested USB microphones](https://github.com/mcguirepr89/BirdNET-Pi/discussions/39)
-- [building your own microphone](https://github.com/DD4WH/SASS/wiki/Stereo--(Mono)-recording-low-noise-low-cost-system)
-- [privacy concerns and options](https://github.com/mcguirepr89/BirdNET-Pi/discussions/166)
-- [beta testing](https://github.com/mcguirepr89/BirdNET-Pi/discussions/11)
-- [and more!](https://github.com/mcguirepr89/BirdNET-Pi/discussions)
-
-
-## Updating 
-
-Use the web interface and go to "Tools" > "System Controls" > "Update". If you encounter any issues with that, or suspect that the update did not work for some reason, please save its output and post it in an issue where we can help.
-
-## Backup and Restore
-Use the web interface and go to "Tools" > "System Controls" > "Backup" or "Restore". Backup/Restore is primary meant for migrating your data for one system to another. Since the time required to create or restore a backup depends on the size of the data set and the speed of the storage, this could take quite a while.
-
-Alternatively, the backup script can be used directly. These examples assume the backup medium is mounted on `/mnt`
-
-To backup:
-```commandline
-./scripts/backup_data.sh -a backup -f /mnt/birds/backup-2024-07-09.tar
-```
-To restore:
-```commandline
-./scripts/backup_data.sh -a restore -f /mnt/birds/backup-2024-07-09.tar
+```bash
+ssh monalisa@birdnet.local
+git clone https://github.com/Twarner491/AvianVisitors.git ~/AvianVisitors
+cd ~/AvianVisitors
 ```
 
-## x86_64 support
-x86_64 support is mainly there for developers or otherwise more Linux savvy people.
-That being said, some pointers:
-- Use Debian 12 or 13
-- The user needs passwordless sudo
+---
 
-For Proxmox, a user has reported adding this in their `cpu-models.conf`, in order for the custom TFLite build to work.
+## 3. Pre-generate illustrations for your region (optional but recommended)
+
+The repo ships with ~450 bundled illustrations. To restyle, regenerate, or add region-specific species, run the pregen script with your Gemini key.
+
+```bash
+export GEMINI_API_KEY='your-gemini-key'
+
+# Generate every species BirdNET-Pi knows:
+python3 avian/scripts/pregen.py --labels ~/BirdNET-Pi/model/labels.txt
+
+# Or filter to species observed in your state/county via eBird:
+export EBIRD_API_KEY='your-ebird-key'
+python3 avian/scripts/pregen.py \
+  --labels ~/BirdNET-Pi/model/labels.txt \
+  --ebird-region US-CA   # state, or US-CA-085 for a county
 ```
-cpu-model: BirdNet
-    flags +sse4.1
-    reported-model host
+
+To change the art style, edit [`avian/scripts/prompt.template.md`](avian/scripts/prompt.template.md) and re-run with `--force`. The template has `{sci_name}`, `{com_name}`, and `{pose}` placeholders; swap the body for whatever style you want (woodblock, ink wash, scientific plate, etc.).
+
+---
+
+## 4. Install the frontend
+
+One-shot installer — drops the static collage UI into `/var/www/avian`, the JSON shims into BirdNET-Pi's PHP root, and a Caddy snippet that mounts everything at `http://birdnet.local/collage/`.
+
+```bash
+bash avian/scripts/install.sh
 ```
 
-## Uninstallation
+That's it. Open `http://birdnet.local/collage/` from any device on your network. As BirdNET-Pi accumulates detections, they fade into the collage — sized by how often each species has been heard.
+
+---
+
+## 5. Loading the Gemini key on the Pi (for live JIT generation)
+
+The bundled illustrations cover most North-American species. For new birds the Pi hasn't seen before, AvianVisitors can render them on the fly. Drop the key into a systemd environment file so the JIT generator picks it up:
+
+```bash
+sudo mkdir -p /etc/avian
+echo "GEMINI_API_KEY=your-gemini-key" | sudo tee /etc/avian/env >/dev/null
+sudo chmod 600 /etc/avian/env
+sudo systemctl restart php8.2-fpm
 ```
-/usr/local/bin/uninstall.sh && cd ~ && rm -drf BirdNET-Pi
+
+The PHP shim at `avian/api/cutout.php` reads `/etc/avian/env` and falls through to a Wikipedia photo if the key is missing — so you can run completely Gemini-free if you'd rather.
+
+---
+
+## 6. Optional: forward off your local network
+
+For public access, Home Assistant integration, or MQTT fan-out, see [`avian/forwarding/`](avian/forwarding/). Each recipe is independent:
+
+- **Cloudflare Tunnel** — public HTTPS URL, no port forwarding, optional Cloudflare Access for password protection.
+- **Home Assistant REST sensor** — surfaces the latest detection as a sensor.value for automations.
+- **MQTT bridge** — publishes every new detection to a broker as JSON.
+
+---
+
+## Repo layout
+
 ```
-## Migrating
-Before switching, make sure your installation is fully up-to-date. Also make sure to have a backup, that is also the only way to get back to the original BirdNET-Pi.
-Please note that upgrading your underlying OS to Bookworm is not going to work. Please stick to Bullseye. If you do want Bookworm, you need to start from a fresh install and copy back your data. (remember the backup!)
-
-Run these commands to migrate to this repo:
+avian/
+├── frontend/         # static HTML/JS/CSS for the collage
+├── assets/           # bundled illustrations + cutouts + masks
+├── api/              # PHP shims served by BirdNET-Pi's existing PHP-FPM
+├── scripts/          # installer + Gemini pregen + editable prompt
+├── caddy/            # snippet mounting /collage on existing Caddy
+└── forwarding/       # optional HA / MQTT / Cloudflare configs
 ```
-git remote remove origin
-git remote add origin https://github.com/Nachtzuster/BirdNET-Pi.git
-./scripts/update_birdnet.sh
-```
-## Troubleshooting and Ideas
-*Hint: A lot of weird problems can be solved by simply restarting the core services. Do this from the web interface "Tools" > "Services" > "Restart Core Services"
-Having trouble or have an idea? *Submit an issue for trouble* and a *discussion for ideas*. Please do *not* submit an issue as a discussion -- the issue tracker solicits information that is needed for anyone to help -- discussions are *not for issues*.
 
-PLEASE search the repo for your issue before creating a new one. This repo has nothing to do with the validity of the detection results, so please do not start any issues around "False positives."
+Everything outside `avian/` is upstream BirdNET-Pi.
 
-## Sharing
-Please join a Discussion!! and please join [BirdWeather!!](https://app.birdweather.com)
-I hope that if you find BirdNET-Pi has been worth your time, you will share your setup, results, customizations, etc. [HERE](https://github.com/mcguirepr89/BirdNET-Pi/discussions/69) and will consider [making your installation public](https://github.com/mcguirepr89/BirdNET-Pi/wiki/Sharing-Your-BirdNET-Pi).
+---
 
-## Homeassistant addon
+## License
 
-BirdNET-Pi can also be run as a [Homeassistant](https://www.home-assistant.io/) addon through docker.
-For more information : https://github.com/alexbelgium/hassio-addons/blob/master/birdnet-pi/README.md
+CC-BY-NC-SA-4.0 (inherited from BirdNET-Pi). Non-commercial use only; share-alike on derivatives. See [`LICENSE`](LICENSE) and [`README.upstream.md`](README.upstream.md).
 
-## Docker
+---
 
-BirdNET-Pi can also be run as as a docker container.
-For more information : https://github.com/alexbelgium/hassio-addons/blob/master/birdnet-pi/README_standalone.md
-
-## Cool Links
-
-- [Marie Lelouche's <i>Out of Spaces</i>](https://www.lestanneries.fr/exposition/marie-lelouche-out-of-spaces/) using BirdNET-Pi in post-sculpture VR! [Press Kit](https://github.com/mcguirepr89/BirdNET-Pi-assets/blob/main/dp_out_of_spaces_marie_lelouche_digital_05_01_22.pdf)
-- [Research on noded BirdNET-Pi networks for farming](https://github.com/mcguirepr89/BirdNET-Pi-assets/blob/main/G23_Report_ModelBasedSysEngineering_FarmMarkBirdDetector_V1__Copy_.pdf)
-- [PixCams Build Guide](https://pixcams.com/building-a-birdnet-pi-real-time-acoustic-bird-id-station/)
-- [Core-Electronics](https://core-electronics.com.au/projects/bird-calls-raspberry-pi) Build Article
-- [RaspberryPi.com Blog Post](https://www.raspberrypi.com/news/classify-birds-acoustically-with-birdnet-pi/)
-- [MagPi Issue 119 Showcase Article](https://magpi.raspberrypi.com/issues/119/pdf)
-
-
-### Internationalization:
-The bird names are in English by default, but other localized versions are available thanks to the wonderful efforts of [@patlevin](https://github.com/patlevin) and Wikipedia. Use the web interface's "Tools" > "Settings" and select your "Database Language" to have the detections in your language.
-
-[Internationalization](docs/translations.md)
-
-
-## Screenshots
-![Overview](docs/overview.png)
-![Spectrogram](docs/spectrogram.png)
-
-
-## :thinking:
-Are you a lucky ducky with a spare Raspberry Pi? [Try Folding@home!](https://foldingathome.org/)
+- [Fork this repository](https://github.com/Twarner491/AvianVisitors/fork)
+- [Watch this repo](https://github.com/Twarner491/AvianVisitors/subscription)
+- [Create issue](https://github.com/Twarner491/AvianVisitors/issues/new)
