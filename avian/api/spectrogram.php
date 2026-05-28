@@ -47,8 +47,8 @@ if ($file !== '') {
         exit;
     }
     // BirdNET-Pi names the spectrogram as the FULL mp3 filename plus
-    // ".png" - e.g. "American_Crow-82-…-20:25:29.mp3" pairs with
-    // "American_Crow-82-…-20:25:29.mp3.png" (not "…-20:25:29.png").
+    // ".png" - e.g. "American_Crow-82-...-20:25:29.mp3" pairs with
+    // "American_Crow-82-...-20:25:29.mp3.png" (not "...-20:25:29.png").
     // Accept either form gracefully.
     if (substr($file, -4) === '.png') {
         $png = $file;

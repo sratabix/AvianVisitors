@@ -212,7 +212,7 @@ def main() -> int:
         if not ek:
             print("error: --ebird-region requires --ebird-key or EBIRD_API_KEY", file=sys.stderr)
             return 2
-        print(f"[ebird] filtering {len(species)} species against {args.ebird_region}…")
+        print(f"[ebird] filtering {len(species)} species against {args.ebird_region}...")
         species = ebird_filter(species, args.ebird_region, ek)
 
     if args.limit:

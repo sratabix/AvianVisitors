@@ -114,7 +114,7 @@ function read_audio(): array {
     for ($i = 0; $i < count($lines); $i += 2) {
         $head = trim($lines[$i]);
         $detail = isset($lines[$i + 1]) ? trim($lines[$i + 1]) : '';
-        $cards[] = $detail !== '' ? "$head — $detail" : $head;
+        $cards[] = $detail !== '' ? "$head - $detail" : $head;
     }
     $usb = shellout('lsusb');
     return [

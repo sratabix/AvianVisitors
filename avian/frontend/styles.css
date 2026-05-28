@@ -6,9 +6,9 @@
     --ink:      #1a1612;
     --ink-2:    #4a3f31;
     --ink-soft: #908576;
-    --accent:   #4a3f31;   /* warm dark grey — matches ink-2, no longer red */
-    --accent-2: #1a1612;   /* near-black ink — same hue as the title text */
-    /* Depth shadow recipes — replace flat 1px borders */
+    --accent:   #4a3f31;   /* warm dark grey - matches ink-2, no longer red */
+    --accent-2: #1a1612;   /* near-black ink - same hue as the title text */
+    /* Depth shadow recipes - replace flat 1px borders */
     --edge:    inset 0 0 0 1px rgba(255,255,255,0.55), 0 0 0 1px rgba(26,22,18,0.04);
     --edge-lg: inset 0 0 0 1px rgba(255,255,255,0.6), 0 0 0 1px rgba(26,22,18,0.06), 0 8px 28px rgba(26,22,18,0.06);
     --recess:  inset 0 1px 2px rgba(26,22,18,0.06), inset 0 0 0 1px rgba(26,22,18,0.04);
@@ -26,7 +26,7 @@
   /* ============ Stage / views ============
      Stage is a flex column: a static title block sits on top, the views
      slider fills the remaining height. The title NEVER moves when the
-     view changes — only its text fades when the new view's title differs
+     view changes - only its text fades when the new view's title differs
      from the current one. */
   .stage {
     position: fixed; inset: 0; overflow: hidden;
@@ -74,7 +74,7 @@
   .view#v1 { display: flex; flex-direction: column; }
   @media (max-width: 700px) { .view { padding: 8px 18px 132px; } .view#v0, .view#v1 { padding: 8px 16px 88px; } }
 
-  /* ============ Top bar — window picker (left) + menu button (right). ============
+  /* ============ Top bar - window picker (left) + menu button (right). ============
      Visible on every view; the picker is the universal time-window control. */
   .top {
     position: fixed; top: 22px; left: 0; right: 0;
@@ -106,7 +106,7 @@
   }
   .menu-btn:hover { transform: translateY(-1px); }
   .menu-btn:active { transform: translateY(0); }
-  /* Compact top bar on mobile — the time-window pill goes from
+  /* Compact top bar on mobile - the time-window pill goes from
      spacious to thumb-tight without losing legibility. */
   @media (max-width: 700px) {
     .top { top: 12px; padding: 0 12px; }
@@ -121,7 +121,7 @@
     .top .window-pick button { font-size: 8px; padding: 5px 7px; letter-spacing: 0.08em; }
   }
 
-  /* ============ Bottom slider — recessed track, raised active pill ============ */
+  /* ============ Bottom slider - recessed track, raised active pill ============ */
   .slider {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
     display: flex; gap: 0; padding: 4px; z-index: 30;
@@ -139,7 +139,7 @@
   .slider button:hover { color: var(--ink); }
   .slider button[aria-current="true"] { color: var(--ink); }
 
-  /* Shared sliding pill — JS animates transform and width to the
+  /* Shared sliding pill - JS animates transform and width to the
      active button's position. The pill is the only element with the
      raised-paper look; buttons just toggle their text colour. */
   .seg-pill {
@@ -188,7 +188,7 @@
     color: var(--ink-soft); letter-spacing: 0.04em;
   }
   .lock-err { color: var(--accent); }
-  /* Tiny "built by teddy" attribution — appears under the lock-screen
+  /* Tiny "built by teddy" attribution - appears under the lock-screen
      password field AND at the foot of the about-card. Same monospace
      micro-type used by .lock-hint so the two contexts read consistent. */
   .built-by {
@@ -232,7 +232,7 @@
     color: var(--ink); text-transform: uppercase;
     margin: 0 0 8px 4px;
   }
-  /* Collapsible section — header is a button row with caret on the right.
+  /* Collapsible section - header is a button row with caret on the right.
      Default state is collapsed so accidental clicks don't touch settings. */
   .menu-section.collapsible > .section-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -292,7 +292,7 @@
     background: var(--paper);
   }
 
-  /* Slider — title row (label + value badge with breathing room) and
+  /* Slider - title row (label + value badge with breathing room) and
      a track row underneath. Value sits at the far right with a wide
      gap so it never crowds the label text. */
   .slider-row {
@@ -365,7 +365,7 @@
     box-shadow: var(--raised);
   }
 
-  /* Inline live-audio player — sits at the top of the unlocked drawer.
+  /* Inline live-audio player - sits at the top of the unlocked drawer.
      A single play/stop button with a quiet running-indicator dot. */
   .live-audio {
     display: flex; align-items: center; gap: 12px;
@@ -403,7 +403,7 @@
   }
   .live-audio button svg { width: 9px; height: 9px; }
   .live-audio button + button { margin-left: 4px; }
-  /* Live spectrogram — hidden until the user clicks LISTEN. We
+  /* Live spectrogram - hidden until the user clicks LISTEN. We
      collapse via max-height (not display:none) so the canvas inside
      keeps its layout dimensions and paints correctly on expand. */
   .live-spectro {
@@ -429,7 +429,7 @@
   }
   .menu-links a.full { grid-column: 1 / -1; }
 
-  /* External BirdNET pages — small grid of cards */
+  /* External BirdNET pages - small grid of cards */
   .menu-links {
     display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
     margin: 4px 0 2px;
@@ -465,7 +465,7 @@
   }
   .menu-save-row button:disabled { opacity: 0.4; cursor: default; }
 
-  /* ============ View 1 — Collage (Galliformes-style poster) ============
+  /* ============ View 1 - Collage (Galliformes-style poster) ============
      Viewport-fit, no scroll. The shared static-head provides the title;
      this view's content is just the cluster of bird cutouts which fills
      the remaining viewport height. */
@@ -479,11 +479,11 @@
     overflow: visible; /* let drop-shadow extend past the bbox */
     transition: transform 130ms ease;
     /* Events are handled at the .collage level via alpha-mask
-       hit-testing — the tile rectangles must not intercept them. */
+       hit-testing - the tile rectangles must not intercept them. */
     pointer-events: none;
   }
   /* Hover state is driven by JS alpha-mask hit-testing (.is-hover),
-     NOT the CSS :hover pseudo — the rectangular tile bounding boxes
+     NOT the CSS :hover pseudo - the rectangular tile bounding boxes
      overlap, so :hover would light up the wrong bird. .is-hover only
      ever sits on the one tile whose silhouette is actually under the
      cursor. */
@@ -491,7 +491,7 @@
   .gtile img {
     width: 100%; height: 100%; object-fit: contain; display: block;
     /* Cutouts arrive as alpha-bbox-cropped transparent-bg PNGs, so
-       object-fit: contain leaves no whitespace inside the tile — the
+       object-fit: contain leaves no whitespace inside the tile - the
        bird touches all four sides. Soft drop shadow keeps it readable
        on paper. */
     filter: drop-shadow(0 2px 6px rgba(26,22,18,0.10));
@@ -500,7 +500,7 @@
   .gtile.is-hover img {
     filter: drop-shadow(0 3px 10px rgba(26,22,18,0.26)) saturate(1.1);
   }
-  /* Hover pill — surfaces the windowed count for the bird under the
+  /* Hover pill - surfaces the windowed count for the bird under the
      cursor. Confirms (Anna's-hummingbird-is-#1 paranoia) that the
      collage scaling reflects the selected window, not all-time. */
   .collage-tip {
@@ -530,7 +530,7 @@
     text-transform: uppercase;
   }
 
-  /* Page header is now shared at .stage > .static-head — see top of CSS. */
+  /* Page header is now shared at .stage > .static-head - see top of CSS. */
   /* Stats grid: charts stack on the LEFT, text sections on the RIGHT.
      Each chart is a full-bleed card; each text section is a list with
      subtle separators. Sized to fit the viewport without scrolling. */
@@ -553,7 +553,7 @@
      square positioned vertically by count (y = quantity), columns
      ordered by detection time (x = time). Rotated two-line label
      sits just above its square. Y-axis count ticks on the left,
-     X-axis time labels on the bottom. Fits the viewport — never scrolls. */
+     X-axis time labels on the bottom. Fits the viewport - never scrolls. */
   .stats-timeline {
     position: relative;
     flex: 1 1 auto; min-height: 0;
@@ -585,7 +585,7 @@
     transform: translateX(-50%);
     cursor: pointer;
   }
-  /* Faint vertical hairlines at every x-axis tick — the "no detections
+  /* Faint vertical hairlines at every x-axis tick - the "no detections
      in this slice" period reads as the empty space between marks. */
   .stats-tl-gridline {
     position: absolute; top: 0; bottom: 0;
@@ -601,7 +601,7 @@
   }
   .stats-tl-col { cursor: pointer; }
   /* Cross-highlight: hovering a square or a table row lights up the
-     matching species on the other side — the square scales up and its
+     matching species on the other side - the square scales up and its
      label scales + shifts to the accent ink, so the whole column reads
      as selected. */
   .stats-tl-col.sync-hi .stats-tl-square {
@@ -614,7 +614,7 @@
   .stats-tl-col.sync-hi .stats-tl-label .com,
   .stats-tl-col.sync-hi .stats-tl-label .sci { color: var(--accent); }
   /* Two-line species label, rotated to read bottom-to-top like the
-     reference exhibition checklist. Sits just above the square —
+     reference exhibition checklist. Sits just above the square -
      rotate(-90deg) then translateY(50%) re-centres the stack on the
      column regardless of label height. Common name and scientific
      name sit as two adjacent columns of vertical text. The sync-hi
@@ -652,7 +652,7 @@
     font: 11px ui-monospace, Menlo, monospace; color: var(--ink-soft);
     text-transform: lowercase; letter-spacing: 0.18em;
   }
-  /* Trim note — shown when the plot can't fit every species column and
+  /* Trim note - shown when the plot can't fit every species column and
      falls back to the most-heard subset. A paper background keeps it
      legible even if a tall label reaches the corner behind it. */
   .stats-tl-cap {
@@ -662,7 +662,7 @@
     letter-spacing: 0.04em;
   }
 
-  /* (Old chart-card / .stats-charts CSS removed — replaced by the
+  /* (Old chart-card / .stats-charts CSS removed - replaced by the
      editorial .stats-timeline above.) */
 
   .stats-side {
@@ -675,7 +675,7 @@
     letter-spacing: 0.18em; text-transform: uppercase; margin: 0 0 1px;
     border-left: 2px solid var(--accent); padding-left: 10px;
   }
-  /* Tight, content-sized groups — they sit just below their headers
+  /* Tight, content-sized groups - they sit just below their headers
      rather than spreading to fill the column. */
   .stats-side .grp { flex: 0 0 auto; }
   .stats-side .grp + .grp { margin-top: 22px; }
@@ -700,10 +700,10 @@
   .stats-side li .yr { font: 9.5px ui-monospace, Menlo, monospace; color: var(--accent-2); letter-spacing: 0.04em; }
   .stats-side li .ct { font: 11px ui-monospace, Menlo, monospace; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
-  /* (Histogram strip removed — charts moved into the stats-grid LEFT
+  /* (Histogram strip removed - charts moved into the stats-grid LEFT
      column as full-bleed chart cards. See .stats-charts above.) */
 
-  /* ============ View 3 — Atlas ============
+  /* ============ View 3 - Atlas ============
      Field-guide grid: one card per species, each card holds the cutout,
      names, window/all-time detection counts, and small action chips for
      audio playback, Wikipedia, and eBird. */
@@ -820,10 +820,10 @@
   .bird-card .chip.play { padding-left: 7px; }
   .bird-card .chip.ext::after { content: '↗'; opacity: 0.6; font-size: 11px; }
 
-  /* Selected card highlight — matches the page-slider and time-window
+  /* Selected card highlight - matches the page-slider and time-window
      pill aesthetic: the active element is a slightly *brighter* paper
      surface (raised) on top of a slightly *recessed* background.
-     No accent colour, no glowing ring — just the same depth shadow
+     No accent colour, no glowing ring - just the same depth shadow
      recipe the rest of the chrome uses. */
   .bird-card { transition: transform 280ms cubic-bezier(.7,.05,.2,1), box-shadow 280ms ease, background 200ms ease; }
   .bird-card[data-active="true"] {
@@ -857,7 +857,7 @@
   /* ============ Admin screen (system / logs / tools) ============
      Overlays the slider when activated via #admin=... hash. Lives
      inside the same shell as the rest of the app so the header,
-     menu button, and time-window pill stay put — feels native. */
+     menu button, and time-window pill stay put - feels native. */
   .admin-screen {
     position: fixed; inset: 60px 0 60px 0;
     background: var(--bg);
@@ -879,7 +879,7 @@
     color: var(--ink); letter-spacing: 0.005em;
   }
   /* Return-to-atlas pill in the same slot the time-window pill
-     normally lives — matches its visual language. */
+     normally lives - matches its visual language. */
   .return-to-atlas {
     position: fixed; top: 18px; left: 20px; z-index: 6;
     display: none; align-items: center; gap: 6px;
@@ -896,7 +896,7 @@
   body.admin-on #slider { visibility: hidden; }
   body.admin-on .static-head { opacity: 0; pointer-events: none; }
   /* Hide the time-window pill on admin pages (it doesn't apply
-     there) — the return-to-atlas link takes its slot. */
+     there) - the return-to-atlas link takes its slot. */
   body.admin-on #winPick { visibility: hidden; }
   .return-to-atlas:hover { color: var(--ink); }
   .return-to-atlas svg { width: 10px; height: 10px; }
@@ -1020,7 +1020,7 @@
   }
   /* When admin screen is shown, the slider underneath is hidden so it
      doesn't compete for scrolling. The static title gets swapped out
-     too — admin is its own section with its own visual identity.
+     too - admin is its own section with its own visual identity.
      Menu button + time-window pill stay visible (still useful). */
   body.admin-on #views { display: none; }
   body.admin-on .nav-band,
@@ -1061,7 +1061,7 @@
      Click a bird card → this fades in over a soft ink backdrop with
      the full sketch, taxonomic info, Wikipedia summary, and a
      scrollable list of every past audio capture for the species. */
-  /* /about — a brief explainer popup floated over the index page.
+  /* /about - a brief explainer popup floated over the index page.
      Reuses .modal-backdrop / .modal-close; opened by the #about hash. */
   #about-modal {
     position: fixed; inset: 0; z-index: 60;
@@ -1099,7 +1099,7 @@
     font: 400 14.5px/1.62 ui-serif, "Iowan Old Style", Georgia, serif;
     color: var(--ink-2);
   }
-  /* Plain inline link — same ink as the prose, a simple underline, no
+  /* Plain inline link - same ink as the prose, a simple underline, no
      hover treatment. */
   .about-card .about-body a {
     color: inherit;
@@ -1140,7 +1140,7 @@
     padding: 30px 34px 26px;
     overflow: auto;
     /* The expand-from-card animation is driven by inline transform
-       and opacity set on open/close — see openDetailModal. CSS
+       and opacity set on open/close - see openDetailModal. CSS
        transition handles the in-between glide. */
     transform-origin: 50% 50%;
     will-change: transform, opacity;
@@ -1151,7 +1151,7 @@
       opacity 220ms ease;
   }
   /* The static aria-hidden=false rule used to override transform. It
-     now conflicts with our inline FLIP morph — removed. The morph
+     now conflicts with our inline FLIP morph - removed. The morph
      handler explicitly sets the destination transform. */
   .modal-close {
     position: absolute; top: 16px; right: 16px;
@@ -1184,7 +1184,7 @@
     transition: opacity 220ms ease;
   }
   .modal-img img.swapping { opacity: 0; }
-  /* Pose toggle — bottom-left corner of the modal sketch, icon strip.
+  /* Pose toggle - bottom-left corner of the modal sketch, icon strip.
      Same recipe as the time-window slider: recessed paper-2 well, a
      white sliding pill behind the active button (via .seg-pill), and
      a color shift on the icon itself. */
@@ -1292,7 +1292,7 @@
   }
   .rec-row:hover { background: var(--paper-2); }
   .rec-row.expanded { grid-template-columns: 30px 1fr auto; }
-  /* Spectrogram strip — inline below the row header. Click on the row
+  /* Spectrogram strip - inline below the row header. Click on the row
      toggles open/closed independent of playback so you can scan
      spectrograms visually without listening. */
   .rec-spectro {
@@ -1300,7 +1300,7 @@
     margin-top: 8px;
     height: 0; overflow: hidden;
     border-radius: 4px;
-    /* Paper background — the spectrogram canvas paints ink ON it,
+    /* Paper background - the spectrogram canvas paints ink ON it,
        matching the sketch palette. */
     background: var(--paper-2);
     box-shadow: var(--recess);
@@ -1308,7 +1308,7 @@
     transition: height 240ms cubic-bezier(.7,.05,.2,1);
   }
   .rec-row.expanded .rec-spectro { height: 88px; }
-  /* The spectrogram is rendered client-side onto a canvas — we fetch
+  /* The spectrogram is rendered client-side onto a canvas - we fetch
      the mp3, decode via Web Audio, run an STFT, and paint columns
      with our ink palette. No BirdNET-Pi PNG involved. */
   .rec-spectro canvas {
@@ -1326,13 +1326,13 @@
     text-transform: lowercase;
     pointer-events: none;
   }
-  /* Played portion — soft ink wash over the paper ground. */
+  /* Played portion - soft ink wash over the paper ground. */
   .rec-spectro .rec-spectro-played {
     position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
     background: linear-gradient(90deg, rgba(26,22,18,0.16), rgba(26,22,18,0.06));
     pointer-events: none;
   }
-  /* Cursor — sliding paper pill with a raised shadow, same recipe as
+  /* Cursor - sliding paper pill with a raised shadow, same recipe as
      the time-window slider's seg-pill. Pops against both the bright
      paper regions of the spectrogram and the inked vocalization
      bands. */
@@ -1435,7 +1435,7 @@
     pointer-events: none;
     transition: width 60ms linear;
   }
-  /* Playhead — thin vertical line at the leading edge */
+  /* Playhead - thin vertical line at the leading edge */
   .bird-card .spectro-wrap::before {
     content: '';
     position: absolute; top: 0; bottom: 0;
