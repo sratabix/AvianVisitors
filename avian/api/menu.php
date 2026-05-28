@@ -31,7 +31,7 @@ echo json_encode([
         // BirdNET-Pi log view (php served at /views.php)
         ['label' => 'logs',        'href' => '/views.php?view=Log+Out',      'native' => false],
         ['label' => 'system',      'href' => '/views.php?view=Services',     'native' => false],
-        // AvianVisitors docs + source
-        ['label' => 'avianvisitors', 'href' => 'https://github.com/Twarner491/AvianVisitors', 'native' => false],
+        // AvianVisitors source
+        ['label' => 'github', 'href' => 'https://github.com/Twarner491/AvianVisitors', 'native' => false],
     ],
 ]);
