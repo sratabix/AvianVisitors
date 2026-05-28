@@ -37,7 +37,13 @@ http:// ${BIRDNETPI_URL} {
     birdnet ${HASHWORD}
   }
   reverse_proxy /stream localhost:8000
-  php_fastcgi unix//run/php/php-fpm.sock
+  # AvianVisitors overlay drops an index.html alongside BirdNET-Pi's
+  # index.php. The default try_files for php_fastcgi prefers index.php
+  # over index.html, so override it - this is a no-op on stock installs
+  # since EXTRACTED has no index.html there.
+  php_fastcgi unix//run/php/php-fpm.sock {
+    try_files {path} {path}/index.html {path}/index.php index.php
+  }
   reverse_proxy /log* localhost:8080
   reverse_proxy /stats* localhost:8501
   reverse_proxy /terminal* localhost:8888
@@ -55,7 +61,13 @@ http:// ${BIRDNETPI_URL} {
     file_server browse
   }
   reverse_proxy /stream localhost:8000
-  php_fastcgi unix//run/php/php-fpm.sock
+  # AvianVisitors overlay drops an index.html alongside BirdNET-Pi's
+  # index.php. The default try_files for php_fastcgi prefers index.php
+  # over index.html, so override it - this is a no-op on stock installs
+  # since EXTRACTED has no index.html there.
+  php_fastcgi unix//run/php/php-fpm.sock {
+    try_files {path} {path}/index.html {path}/index.php index.php
+  }
   reverse_proxy /log* localhost:8080
   reverse_proxy /stats* localhost:8501
   reverse_proxy /terminal* localhost:8888
