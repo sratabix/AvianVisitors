@@ -30,6 +30,27 @@
     pill.style.transform = 'translateX(' + active.offsetLeft + 'px)';
   }
 
+  // Clicking the open space of a segmented toggle (not a specific option)
+  // advances to the next available option, cycling. Clicking an option
+  // still jumps straight to it - we just synthesize a click on the next
+  // button so its existing handler runs.
+  function wireToggleAdvance(container) {
+    if (!container || container.__advanceWired) return;
+    container.__advanceWired = true;
+    container.addEventListener('click', function (ev) {
+      if (ev.target.closest('button')) return;   // a specific option was clicked
+      var btns = [].slice.call(container.querySelectorAll('button')).filter(function (b) {
+        return !b.disabled && b.getAttribute('data-unavailable') !== 'true';
+      });
+      if (btns.length < 2) return;
+      var cur = -1;
+      for (var i = 0; i < btns.length; i++) {
+        if (btns[i].getAttribute('aria-current') === 'true') { cur = i; break; }
+      }
+      btns[(cur + 1) % btns.length].click();
+    });
+  }
+
   // ---- Slider ----
   var views = document.getElementById('views');
   var slider = document.getElementById('slider');
@@ -157,11 +178,17 @@
       window.__atlasSort = b.dataset.sort;
       writeLS('bird:atlasSort', window.__atlasSort);
       syncPill(atlasSortEl);
-      // Re-render the atlas with new sort.
-      renderAtlas();
+      // Re-render the atlas with new sort, replaying the row-by-row
+      // cascade so a filter change reads as a fresh stack load-in.
+      renderAtlas(true);
     });
   });
 
+  // Open-space click advances these segmented toggles to the next option.
+  wireToggleAdvance(slider);
+  wireToggleAdvance(winPick);
+  wireToggleAdvance(atlasSortEl);
+  wireToggleAdvance(document.getElementById('modalPoseToggle'));
   function syncAllPills() { syncPill(slider); syncPill(winPick); if (atlasSortEl) syncPill(atlasSortEl); }
   // The buttons size from text content; wait for fonts so width is correct.
   if (document.fonts && document.fonts.ready) {
@@ -1445,6 +1472,16 @@
       + '<canvas class="live-spectro" id="liveSpectro" width="600" height="120" aria-label="live spectrogram"></canvas>'
       + '<div class="live-status" id="liveStatus"></div>'
       + '<div class="menu-links">' + linksHtml + '</div>';
+
+    // Clicking a nav link (settings / system / logs / tools) collapses the
+    // menu back into the button - it has opened (or navigated to) its page,
+    // so leaving the drawer open is just clutter. The listen button and the
+    // built-by / GitHub links deliberately DON'T close it (you stay in the
+    // drawer to keep the stream going; those links open a new tab).
+    var menuLinks = items.querySelector('.menu-links');
+    if (menuLinks) menuLinks.addEventListener('click', function (ev) {
+      if (ev.target.closest('a')) closeDd();
+    });
 
     // Live audio + realtime spectrogram. The audio element and the
     // FFT analyser share one AudioContext; once .play() is called the
