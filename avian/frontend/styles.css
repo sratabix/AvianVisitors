@@ -8,11 +8,37 @@
     --ink-soft: #908576;
     --accent:   #4a3f31;   /* warm dark grey - matches ink-2, no longer red */
     --accent-2: #1a1612;   /* near-black ink - same hue as the title text */
+    --hairline: rgba(26,22,18,0.14);  /* faint divider lines + chart gridlines */
+    --pill:     #fcfcfb;              /* active-toggle sliding pill */
     /* Depth shadow recipes - replace flat 1px borders */
     --edge:    inset 0 0 0 1px rgba(255,255,255,0.55), 0 0 0 1px rgba(26,22,18,0.04);
     --edge-lg: inset 0 0 0 1px rgba(255,255,255,0.6), 0 0 0 1px rgba(26,22,18,0.06), 0 8px 28px rgba(26,22,18,0.06);
     --recess:  inset 0 1px 2px rgba(26,22,18,0.06), inset 0 0 0 1px rgba(26,22,18,0.04);
     --raised:  inset 0 0 0 1px rgba(255,255,255,0.8), 0 0 0 1px rgba(26,22,18,0.05), 0 1px 2px rgba(26,22,18,0.07);
+  }
+  /* ---- Charcoal dark theme. Set via data-theme="dark" on <html> (an
+     inline script in index.html applies the saved choice before paint;
+     the switcher lives in Settings). The whole UI is variable-driven, so
+     flipping ink<->paper inverts cleanly: text reads light, the stats
+     squares become light marks on dark, the collage cutouts (transparent
+     PNGs) sit on the charcoal directly. Shadow recipes are re-cut for a
+     dark surface (faint light edges, deeper drop shadows). ---- */
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper:    #17181c;   /* charcoal page bg */
+    --paper-2:  #212329;   /* recessed track */
+    --paper-3:  #2c2f36;   /* placeholder fill */
+    --ink:      #ece8e1;   /* warm off-white text / marks */
+    --ink-2:    #b7afa2;   /* secondary text */
+    --ink-soft: #837c70;   /* muted text */
+    --accent:   #d8d2c6;   /* light warm - pills read light-on-dark */
+    --accent-2: #ece8e1;
+    --hairline: rgba(236,232,225,0.20);  /* faint light divider on charcoal */
+    --pill:     #3a3e48;                 /* raised, clearly lighter than the track */
+    --edge:    inset 0 0 0 1px rgba(255,255,255,0.05), 0 0 0 1px rgba(0,0,0,0.4);
+    --edge-lg: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 0 1px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.5);
+    --recess:  inset 0 1px 2px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.04);
+    --raised:  inset 0 0 0 1px rgba(255,255,255,0.07), 0 0 0 1px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.5);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; background: var(--paper); color: var(--ink); }
@@ -144,7 +170,7 @@
      raised-paper look; buttons just toggle their text colour. */
   .seg-pill {
     position: absolute; top: 4px; bottom: 4px; left: 0;
-    background: var(--paper); border-radius: 999px;
+    background: var(--pill); border-radius: 999px;
     box-shadow: var(--raised);
     transition: transform 320ms cubic-bezier(.7,.05,.2,1), width 320ms cubic-bezier(.7,.05,.2,1);
     will-change: transform, width;
@@ -280,7 +306,7 @@
   .switch::after {
     content: ''; position: absolute; top: 2px; left: 2px;
     width: 16px; height: 16px;
-    background: var(--paper); border-radius: 999px;
+    background: var(--pill); border-radius: 999px;
     box-shadow: var(--raised);
     transition: transform 220ms cubic-bezier(.7,.05,.2,1), background 200ms ease;
   }
@@ -289,7 +315,7 @@
   }
   .switch[aria-checked="true"]::after {
     transform: translateX(18px);
-    background: var(--paper);
+    background: var(--pill);
   }
 
   /* Slider - title row (label + value badge with breathing room) and
@@ -361,7 +387,7 @@
   }
   .seg button[aria-current="true"] {
     color: var(--ink);
-    background: var(--paper);
+    background: var(--pill);
     box-shadow: var(--raised);
   }
 
