@@ -1,0 +1,24 @@
+services:
+  avianvisitors:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: avianvisitors:latest
+    container_name: avianvisitors
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+    devices:
+      - "/dev/snd:/dev/snd"
+    group_add:
+      - audio
+    environment:
+      BIRDNET_REC_CARD: "default"
+      BIRDNET_CHANNELS: "2"
+      BIRDNET_LATITUDE: ""
+      BIRDNET_LONGITUDE: ""
+    volumes:
+      - data:/data
+
+volumes:
+  data:

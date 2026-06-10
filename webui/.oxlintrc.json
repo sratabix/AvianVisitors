@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "ignorePatterns": ["frontend/masks.json", "frontend/dims.json"],
+  "categories": {
+    "correctness": "warn"
+  },
+  "rules": {}
+}

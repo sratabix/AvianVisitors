@@ -1,0 +1,159 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags:
+      - "v*.*.*"
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  birdnet:
+    name: birdnet (ruff + pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: birdnet
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v8
+        with:
+          version: "0.11.19"
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libsndfile1 libgomp1
+      - run: uv sync --frozen --extra notify --group dev
+      - run: uv pip install https://github.com/Nachtzuster/BirdNET-Pi/releases/download/v0.1/tflite_runtime-2.17.1-cp311-cp311-linux_x86_64.whl
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run --no-sync pytest -q
+
+  generate:
+    name: generate (ruff)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webui/generate
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v8
+        with:
+          version: "0.11.19"
+      - run: uvx ruff check .
+      - run: uvx ruff format --check .
+
+  frontend:
+    name: frontend (oxlint + oxfmt)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webui
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  php:
+    name: php (mago)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: docker run --rm -v "${{ github.workspace }}/webui:/repo" -w /repo ghcr.io/carthage-software/mago:latest fmt --check
+      - run: docker run --rm -v "${{ github.workspace }}/webui:/repo" -w /repo ghcr.io/carthage-software/mago:latest lint
+
+  dockerfile:
+    name: dockerfile (hadolint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: docker/Dockerfile
+          config: .hadolint.yaml
+
+  docker:
+    name: Docker build (no push)
+    needs: [birdnet, generate, frontend, php, dockerfile]
+    runs-on: ubuntu-latest
+    if: ${{ github.ref != 'refs/heads/avian-visitors' && !startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          provenance: false
+          sbom: false
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  publish-dev:
+    name: Publish :dev image
+    needs: [birdnet, generate, frontend, php, dockerfile]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/avian-visitors'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/avianvisitors:dev
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  publish:
+    name: Publish image
+    needs: [birdnet, generate, frontend, php, dockerfile]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/avianvisitors
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

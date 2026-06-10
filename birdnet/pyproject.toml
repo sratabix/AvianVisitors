@@ -1,0 +1,50 @@
+[project]
+name = "avianvisitors"
+version = "0.0.1"
+description = "Live bird collage from a window microphone, powered by BirdNET."
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "librosa",
+    "numpy<2",
+    "pandas",
+    "soundfile",
+    "inotify",
+    "requests",
+    "suntime==1.3.2",
+    "tzlocal",
+    "pytz",
+    "pillow",
+]
+
+[project.optional-dependencies]
+stats = [
+    "streamlit==1.44.0",
+    "plotly",
+    "seaborn",
+    "matplotlib",
+    "pyarrow==20.0.0",
+]
+notify = [
+    "apprise==1.9.5",
+    "paho-mqtt!=2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==7.1.2",
+    "ruff",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 160
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E402", "E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["F401", "F811"]

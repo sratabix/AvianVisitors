@@ -1,0 +1,20 @@
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	root * /home/birdnet/BirdSongs/Extracted
+	file_server browse
+	handle /By_Date/* {
+		file_server browse
+	}
+	handle /Charts/* {
+		file_server browse
+	}
+	reverse_proxy /stream localhost:8000
+	php_fastcgi unix//run/php/php-fpm.sock {
+		try_files {path} {path}/index.html {path}/index.php index.php
+	}
+	reverse_proxy /stats* localhost:8501
+}

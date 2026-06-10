@@ -1,0 +1,14 @@
+php-version = "8.2"
+
+[source]
+paths = ["api"]
+
+[formatter]
+print-width = 120
+
+[linter.rules]
+no-error-control-operator = { enabled = false }
+no-empty = { enabled = false }
+no-isset = { enabled = false }
+literal-named-argument = { enabled = false }
+cyclomatic-complexity = { enabled = false }

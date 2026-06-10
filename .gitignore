@@ -26,18 +26,19 @@
 
 *.pyc
 __pycache__/
+node_modules/
+.ruff_cache/
 *.flac
 .vscode
-model/labels.txt
+birdnet/model/labels.txt
 datasets/
 birdnet.conf
 IdentifiedSoFar.txt
 IdentifiedSoFar.txt.bak
 Birders_Guide_Installer_Configuration.txt
-birdnet/
 templates/*.service
-scripts/*.txt
-scripts/*.db
+birdnet/*.txt
+birdnet/*.db
 analyzing_now.txt
 apprise.txt
 body.txt
@@ -54,6 +55,31 @@ whitelist_species_list.txt
 # Claude Code session data
 .claude/
 # Large source / reference imagery kept on disk for working
-avian/assets/references/
+webui/assets/references/
 # Superseded assets retained locally
-avian/assets/_legacy/
+webui/assets/_legacy/
+
+.venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+*.pyo
+.env
+.env.*
+!.env.example
+*.log
+installation-*.txt
+npm-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+BirdSongs/
+tflite_runtime-*.whl
+*.swp
+*.swo
+*~
+Thumbs.db
+._*

@@ -1,0 +1,9 @@
+.git
+.github
+BirdSongs
+installation-*.txt
+node_modules
+**/__pycache__
+*.pyc
+.ruff_cache
+.venv
