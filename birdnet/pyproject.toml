@@ -22,7 +22,7 @@ stats = [
     "plotly",
     "seaborn",
     "matplotlib",
-    "pyarrow==20.0.0",
+    "pyarrow==24.0.0",
 ]
 notify = [
     "apprise==1.9.5",
