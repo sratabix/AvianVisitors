@@ -185,6 +185,41 @@ else
   fi
 fi
 
+if [ "${AUDIO_OK}" = "true" ] && [ -z "${RTSP_STREAM:-}" ] && [ -d /dev/snd ]; then
+  hw=""
+  case "${REC_CARD:-default}" in
+    plughw:* | hw:*) hw="hw:${REC_CARD#*:}" ;;
+    [0-9]*,[0-9]*) hw="hw:${REC_CARD}" ;;
+  esac
+  if [ -z "${hw}" ]; then
+    hw=$(arecord -l 2>/dev/null | sed -n 's/^card \([0-9]\+\):.*device \([0-9]\+\):.*/hw:\1,\2/p' | head -1 || true)
+  fi
+  if [ -n "${hw}" ]; then
+    cat > /home/birdnet/.asoundrc <<EOF
+pcm.birdnet_mic {
+  type plug
+  slave.pcm "dsnoop_birdnet"
+}
+pcm.dsnoop_birdnet {
+  type dsnoop
+  ipc_key 2048
+  ipc_perm 0660
+  slave {
+    pcm "${hw}"
+    channels ${CHANNELS:-2}
+    rate 48000
+    format S16_LE
+  }
+}
+EOF
+    sed -i "s|^REC_CARD=.*|REC_CARD=birdnet_mic|" "${CONF}"
+    info "shared capture enabled: recording + livestream both read ${hw} via dsnoop"
+    note "if recording fails to open the mic, your card may not support 48000Hz/${CHANNELS:-2}ch; set BIRDNET_REC_CARD to a raw plughw device and live audio will be disabled"
+  else
+    warn "could not resolve the capture hw device; recording + livestream cannot share a raw device, so live audio will conflict with recording"
+  fi
+fi
+
 export AV_AUDIO_AUTOSTART="${AUDIO_OK}"
 if [ "${AUDIO_OK}" != "true" ]; then
   warn "recording + analysis will not auto-start without an audio source; the rest of the app runs normally"
