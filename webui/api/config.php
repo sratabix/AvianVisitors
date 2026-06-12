@@ -194,7 +194,11 @@ if ($method === 'POST') {
         foreach (['analysis', 'recording'] as $svc) {
             $rc = 0;
             $out = [];
-            exec('/usr/bin/supervisorctl -c /etc/supervisor/supervisord.conf restart ' . escapeshellarg($svc) . ' 2>&1', $out, $rc);
+            exec(
+                '/usr/bin/supervisorctl -c /etc/supervisor/supervisord.conf restart ' . escapeshellarg($svc) . ' 2>&1',
+                $out,
+                $rc,
+            );
             $restarted[$svc] = $rc === 0;
         }
     }

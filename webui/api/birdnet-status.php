@@ -197,6 +197,7 @@ const ALLOWED_UNITS = [
 ];
 
 const SUPERVISORCTL = '/usr/bin/supervisorctl -c /etc/supervisor/supervisord.conf';
+
 const LOGS_DIR = '/data/logs';
 
 function services_status(): array

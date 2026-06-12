@@ -83,3 +83,5 @@ tflite_runtime-*.whl
 *~
 Thumbs.db
 ._*
+
+dev-data/

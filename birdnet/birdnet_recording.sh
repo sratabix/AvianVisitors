@@ -39,7 +39,6 @@ if [ -n "${RTSP_STREAM}" ];then
   done
   wait
 else
-  if ! pulseaudio --check;then pulseaudio --start;fi
   if pgrep arecord &> /dev/null ;then
     echo "Recording"
   else

@@ -3,7 +3,7 @@ set -euo pipefail
 
 APP_DIR=/home/birdnet/BirdNET-Pi
 DATA_DIR=/data
-BIRDSONGS=/home/birdnet/BirdSongs
+RECORDINGS=${DATA_DIR}/recordings
 LOGS_DIR=${DATA_DIR}/logs
 CFG_DIR=${DATA_DIR}/config
 CONF=${DATA_DIR}/birdnet.conf
@@ -88,10 +88,10 @@ if [ "${FATAL}" = "1" ]; then
 fi
 
 mkdir -p \
-  "${BIRDSONGS}/Extracted/By_Date" \
-  "${BIRDSONGS}/Extracted/Charts" \
-  "${BIRDSONGS}/Processed" \
-  "${BIRDSONGS}/StreamData" \
+  "${RECORDINGS}/Extracted/By_Date" \
+  "${RECORDINGS}/Extracted/Charts" \
+  "${RECORDINGS}/Processed" \
+  "${RECORDINGS}/StreamData" \
   "${LOGS_DIR}" \
   "${CFG_DIR}"
 
@@ -155,7 +155,11 @@ if [ ! -f "${DBTXT}" ]; then
 fi
 
 REC_CARD_VAL="${REC_CARD:-default}"
-if [ ! -d /dev/snd ]; then
+AUDIO_OK=false
+if [ -n "${RTSP_STREAM:-}" ]; then
+  info "audio source: RTSP stream configured; recording will use the network feed"
+  AUDIO_OK=true
+elif [ ! -d /dev/snd ]; then
   warn "no audio devices: /dev/snd is not present in the container; recording is disabled"
   note "map your sound card in docker-compose.yml: devices: [ \"/dev/snd:/dev/snd\" ]"
 else
@@ -169,6 +173,7 @@ else
   cards=$(arecord -l 2>/dev/null | grep -c '^card ' || true)
   if [ "${readable}" = "1" ] && [ "${cards:-0}" -ge 1 ]; then
     info "microphone access OK (${cards} capture device(s) visible, configured REC_CARD=${REC_CARD_VAL})"
+    AUDIO_OK=true
   elif [ "${cards:-0}" -ge 1 ] && [ "${readable}" != "1" ]; then
     warn "capture devices exist but uid=${UID_IN} cannot read /dev/snd nodes; recording will fail"
     note "/dev/snd is owned by gid=${snd_gid:-?}; container audio gid=${audio_gid:-?}; current groups: $(id -Gn | tr ' ' ',')"
@@ -178,6 +183,12 @@ else
     note "list cards the container can see with: docker compose exec avianvisitors arecord -l"
     note "then set the right one via BIRDNET_REC_CARD (e.g. \"plughw:1,0\") in docker-compose.yml"
   fi
+fi
+
+export AV_AUDIO_AUTOSTART="${AUDIO_OK}"
+if [ "${AUDIO_OK}" != "true" ]; then
+  warn "recording + analysis will not auto-start without an audio source; the rest of the app runs normally"
+  note "connect a mic (or set RTSP_STREAM), then start them from the web UI tools or restart the container"
 fi
 
 disk_free_mb() { df -Pm "$1" 2>/dev/null | awk 'NR==2 {print $4}'; }

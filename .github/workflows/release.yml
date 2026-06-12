@@ -20,7 +20,7 @@ jobs:
         working-directory: birdnet
     steps:
       - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v8
+      - uses: astral-sh/setup-uv@v8.2.0
         with:
           version: "0.11.19"
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libsndfile1 libgomp1
@@ -38,7 +38,7 @@ jobs:
         working-directory: webui/generate
     steps:
       - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v8
+      - uses: astral-sh/setup-uv@v8.2.0
         with:
           version: "0.11.19"
       - run: uvx ruff check .
